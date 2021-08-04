@@ -1,0 +1,606 @@
+package My_Forms;
+
+import My_classes.DB;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Image;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.border.Border;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import net.proteanit.sql.DbUtils;
+import My_classes.rentABook;
+
+public final class Dasboard extends javax.swing.JFrame implements ActionListener {
+
+    Border buttonBorder1 = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.white);
+    Border buttonBorder0 = BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(36, 37, 42));
+    ResultSet rs = null;
+
+    public Dasboard() throws SQLException, ClassNotFoundException {
+        initComponents();
+        setTitle("RentBooker");
+        this.setLocationRelativeTo(null);
+        displayImage();
+        populateTable("SELECT * FROM `library`");
+        populateRentedBooksTable("SELECT * FROM `rentedBooks`");
+
+        // add a border 
+        Border panelHeaderBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white);
+        jPanel3_Header.setBorder(panelHeaderBorder);
+        addBorders();
+        buttonHoverEffect();
+    }
+
+    public void addBorders() {
+        Component[] comps = jPanel_Menu.getComponents();
+
+        for (Component comp : comps) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                button.setBorder(buttonBorder1);
+
+            }
+        }
+    }
+
+    public void buttonHoverEffect() {
+        Component[] comps = jPanel_Menu.getComponents();
+        for (Component comp : comps) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                System.out.println("Borders");
+                button.addMouseListener(new MouseAdapter() {
+
+                    public void MouseEntered(MouseEvent evt) {
+                        button.setBorder(buttonBorder1);
+                    }
+
+                    public void MouseExited(MouseEvent evt) {
+                        button.setBorder(buttonBorder0);
+                    }
+                });
+            }
+        }
+    }
+
+    public void displayTextLogin() {
+
+    }
+
+    public void displayImage() {
+        ImageIcon imgIco = new ImageIcon("F:\\Library_system_for_users\\src\\main\\java\\My_Images\\book_dashboard_logo.png");
+        Image image = imgIco.getImage().getScaledInstance(jLabel1_Dashboard_Logo.getWidth(), jLabel1_Dashboard_Logo.getHeight(), Image.SCALE_SMOOTH);
+        jLabel1_Dashboard_Logo.setIcon(new ImageIcon(image));
+    }
+
+    public void populateTable(String query) throws SQLException, ClassNotFoundException {
+        try {
+            Connection conn = DB.getConnection();
+            PreparedStatement pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void populateRentedBooksTable(String query) throws SQLException, ClassNotFoundException {
+        try {
+            Connection conn = DB.getConnection();
+            PreparedStatement pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+            jTable3.setModel(DbUtils.resultSetToTableModel(rs));
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void refreshTable() {
+        try {
+            Connection conn = DB.getConnection();
+            String query = "SELECT * FROM library";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(null, "TRY AGAIN!");
+        }
+    }
+
+    public void refreshRentedBooksTable() {
+        try {
+            Connection conn = DB.getConnection();
+            String query = "SELECT * FROM rentedBooks";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            jTable3.setModel(DbUtils.resultSetToTableModel(rs));
+
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(null, "TRY AGAIN!");
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jPanel_Menu = new javax.swing.JPanel();
+        jPanel3_Header = new javax.swing.JPanel();
+        jLabel1_Dashboard_Logo = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton5 = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        txtSearch = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel_Menu.setBackground(new java.awt.Color(255, 202, 159));
+        jPanel_Menu.setOpaque(false);
+
+        jPanel3_Header.setBackground(new java.awt.Color(204, 204, 204));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel1.setText("LIBRARY_CATALOG");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "BOOK", "AUTHOR", "DATE", "GENRE"
+            }
+        ));
+        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTable1.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        jTable1.setFillsViewportHeight(true);
+        jTable1.setGridColor(new java.awt.Color(0, 0, 0));
+        jTable1.setInheritsPopupMenu(true);
+        jTable1.setOpaque(false);
+        jTable1.setRequestFocusEnabled(false);
+        jTable1.setRowHeight(25);
+        jTable1.setSelectionBackground(new java.awt.Color(204, 255, 204));
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.setShowGrid(true);
+        jTable1.setSurrendersFocusOnKeystroke(true);
+  
+        jScrollPane4.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(35);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(50);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(290);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(300);
+            jTable1.getColumnModel().getColumn(1).setMaxWidth(300);
+            jTable1.getColumnModel().getColumn(2).setMinWidth(290);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(300);
+            jTable1.getColumnModel().getColumn(2).setMaxWidth(390);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(4).setMinWidth(190);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(4).setMaxWidth(20);
+        }
+
+        javax.swing.GroupLayout jPanel3_HeaderLayout = new javax.swing.GroupLayout(jPanel3_Header);
+        jPanel3_Header.setLayout(jPanel3_HeaderLayout);
+        jPanel3_HeaderLayout.setHorizontalGroup(
+            jPanel3_HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3_HeaderLayout.createSequentialGroup()
+                .addGap(216, 216, 216)
+                .addComponent(jLabel1_Dashboard_Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3_HeaderLayout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 890, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel3_HeaderLayout.setVerticalGroup(
+            jPanel3_HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3_HeaderLayout.createSequentialGroup()
+                .addGroup(jPanel3_HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3_HeaderLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3_HeaderLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1_Dashboard_Logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Rent book");
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("Return book");
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.setHideActionText(true);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel2.setText("Seach:");
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "BOOK NAME", "AUTHOR", "YEAR", "GENRE" }));
+        jComboBox1.setFocusable(false);
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(51, 255, 51));
+        jButton5.setIcon(new javax.swing.ImageIcon("F:\\Library_system_for_users\\src\\main\\java\\My_Images\\down-arrow.png")); // NOI18N
+        jButton5.setText("Books rented by you (max. 3 per month):   ");
+        jButton5.setBorderPainted(false);
+        jButton5.setContentAreaFilled(false);
+        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton5.setDebugGraphicsOptions(javax.swing.DebugGraphics.FLASH_OPTION);
+        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        jTable3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "BOOK", "AUTHOR", "DATE", "GENRE"
+            }
+        ));
+        jTable3.setAutoscrolls(false);
+        jTable3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTable3.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        jTable3.setGridColor(new java.awt.Color(255, 255, 255));
+        jTable3.setRowHeight(25);
+        jTable3.setSelectionBackground(new java.awt.Color(255, 204, 204));
+        jTable3.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        jTable3.setShowGrid(true);
+        jTable3.setShowHorizontalLines(false);
+
+        jScrollPane5.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setMinWidth(35);
+            jTable3.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jTable3.getColumnModel().getColumn(0).setMaxWidth(50);
+            jTable3.getColumnModel().getColumn(1).setMinWidth(290);
+            jTable3.getColumnModel().getColumn(1).setPreferredWidth(300);
+            jTable3.getColumnModel().getColumn(1).setMaxWidth(300);
+            jTable3.getColumnModel().getColumn(2).setMinWidth(290);
+            jTable3.getColumnModel().getColumn(2).setPreferredWidth(300);
+            jTable3.getColumnModel().getColumn(2).setMaxWidth(390);
+            jTable3.getColumnModel().getColumn(3).setPreferredWidth(50);
+            jTable3.getColumnModel().getColumn(4).setMinWidth(190);
+            jTable3.getColumnModel().getColumn(4).setPreferredWidth(200);
+            jTable3.getColumnModel().getColumn(4).setMaxWidth(20);
+        }
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel3.setText("Sort by:");
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        txtSearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+            
+        });
+
+        javax.swing.GroupLayout jPanel_MenuLayout = new javax.swing.GroupLayout(jPanel_Menu);
+        jPanel_Menu.setLayout(jPanel_MenuLayout);
+        jPanel_MenuLayout.setHorizontalGroup(
+            jPanel_MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_MenuLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jPanel_MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3_Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel_MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtSearch)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_MenuLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel_MenuLayout.createSequentialGroup()
+                        .addGroup(jPanel_MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel_MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, 167, Short.MAX_VALUE))
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel_MenuLayout.setVerticalGroup(
+            jPanel_MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_MenuLayout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addGroup(jPanel_MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3_Header, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_MenuLayout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel_MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel_MenuLayout.createSequentialGroup()
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30))
+        );
+
+        jPanel1.add(jPanel_Menu);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        String command = evt.getActionCommand();
+        System.out.println("this is Sparta =" + command);
+        String selectedCellValue = (String) jTable3.getValueAt(jTable3.getSelectedRow(), jTable3.getSelectedColumn());
+        System.out.println(selectedCellValue);
+        PreparedStatement pst = null;
+        Connection conn = null;
+        rentABook book1 = new rentABook();
+        try {
+            book1.returnBookFunction(selectedCellValue);
+            conn = null;
+            conn = DB.getConnection();
+            pst = conn.prepareStatement("DELETE FROM `rentedBooks` WHERE `AUTHOR`='" + selectedCellValue + "'");
+            pst.execute();
+            System.out.println("Succeed");
+            refreshTable();
+            refreshRentedBooksTable();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Dasboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        Object selected = jComboBox1.getSelectedItem();
+        System.out.println("Selected Item = " + selected);
+        String command = evt.getActionCommand();
+        System.out.println("Action Command = " + command);
+        try {
+            if ("ID".equals(selected)) {
+                populateTable("SELECT * FROM `library` ORDER BY `ID`");
+            } else if ("NAME".equals(selected)) {
+                populateTable("SELECT * FROM `library` ORDER BY `AUTHOR`");
+            } else if ("BOOK NAME".equals(selected)) {
+                populateTable("SELECT * FROM `library` ORDER BY `BOOK NAME`");
+            } else if ("GENRE".equals(selected)) {
+                populateTable("SELECT * FROM `library` ORDER BY `GENRE`");
+            } else {
+                populateTable("SELECT * FROM `library` ORDER BY `YEAR`");
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Dasboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    @SuppressWarnings("empty-statement")
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        String selectedCellValue = (String) jTable1.getValueAt(jTable1.getSelectedRow(), jTable1.getSelectedColumn());
+        rentABook book = new rentABook();
+        String command = evt.getActionCommand();
+        System.out.println("this" + command);
+        Connection conn = null;
+        PreparedStatement pst = null;
+        try {
+            if (book.returnRowTable("rentedBooks") < 3) {
+                System.out.println("Count=" + book.returnRowTable("rentedBooks"));
+                book.rentFunction(selectedCellValue);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Return one of your rented books to choose another for rent", "You can only rent 3 books per month!", 3);
+                return;
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Dasboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+
+            conn = DB.getConnection();
+            pst = conn.prepareStatement("DELETE FROM `library` WHERE `AUTHOR`='" + selectedCellValue + "'");
+            pst.execute();
+            System.out.println("Suoeeee");
+            refreshTable();
+            refreshRentedBooksTable();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Dasboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        try {
+            String selection = (String) jComboBox1.getSelectedItem();
+
+            String query = "SELECT `ID`,`BOOK NAME`,`AUTHOR`,`YEAR`,`GENRE` FROM `library` WHERE `" + selection + "`=?";
+            Connection conn = DB.getConnection();
+            try ( PreparedStatement pst = conn.prepareStatement(query)) {
+                pst.setString(1, txtSearch.getText());
+                rs = pst.executeQuery();
+
+                jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+                while (rs.next()) {
+
+                }
+            }
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
+    }//GEN-LAST:event_txtSearchKeyReleased
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Dasboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Dasboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Dasboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Dasboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new Dasboard().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Dasboard.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Dasboard.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+
+    public JTable getFirstTable() {
+        return jTable1;
+    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel1_Dashboard_Logo;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3_Header;
+    private javax.swing.JPanel jPanel_Menu;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable3;
+    private javax.swing.JTextField txtSearch;
+    // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+}
